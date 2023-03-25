@@ -32,20 +32,20 @@ def euclide_extend(a,b):
    return (r0,s0,t0)
 
 # Example of Section 5.1.1
-#T1 =  10
-#rd_ph1 = 1
-#T2 = 16
-#rd_ph2 = 1
+T1 =  16
+rd_ph1 = 1
+wr_ph1 = rd_ph1+T1            # implicit deadline
+T2 = 10
+rd_ph2 = 1
+wr_ph2 = rd_ph2+T2            # implicit deadline
 
 # Example of Section 5.2.1
-T1 = 24
-rd_ph1 = 0
-T2 = 33
-rd_ph2 = 8
-
-# Implicit deadline: write = read+period
-wr_ph1 = rd_ph1+T1
-wr_ph2 = rd_ph2+T2
+#T1 = 24
+#rd_ph1 = 0
+#wr_ph1 = rd_ph1+T1            # implicit deadline
+#T2 = 33
+#rd_ph2 = 8
+#wr_ph2 = rd_ph2+T2            # implicit deadline
 
 # distance from tau_1 job 0 write  -->  tau_2 job 0 read
 PPhase = rd_ph2-wr_ph1
@@ -64,6 +64,7 @@ if T1 == T2:
    # assuming jobs of the chain 1->2 are indexed by T1
    rd_ph12 = rd_ph1
    rd_delta12 = wr_delta12 = T1
+   cycle = 1
    wr_ph12 = wr_ph2-PPhase+(PPhase % T1)
    max_latency = min_latency
    id_min_latency = 0
@@ -74,6 +75,7 @@ elif T1 > T2:
    rd_ph12 = rd_ph1
    rd_delta12 = T1                # constant separation of consecutive reads
    dancing = [(phi1-j1*p1) % p2 for j1 in range(p2)]  # the job-dependent piece of (22)
+   cycle = p2
    # Write phasing, Eq. (24)
    wr_ph12 = [wr_ph2-PPhase+rem*G+(PPhase % G) for rem in dancing]
    # separation of consecutive writes
@@ -91,6 +93,7 @@ else:
    wr_ph12 = wr_ph2
    wr_delta12 = T2                # constant separation of consecutive writes
    dancing = [(phi2+j2*p2) % p1 for j2 in range(p1)]  # the job-dependent piece of (31)
+   cycle = p1
    # Read phasing, Eq. (33)
    rd_ph12 = [rd_ph1+PPhase-(PPhase % G)-rem*G for rem in dancing]
    # separation of consecutive reads
@@ -103,7 +106,41 @@ else:
    # Write phase of the copier task before tau_1. Eq. (40)
    wr_ph1prev = rd_ph1+PPhase-(PPhase % G)-T1+G
    
-
+# Now printing
+print("LET Task 1")
+print("\tPeriod:\t\t",T1,sep='')
+print("\tRead phasing:\t",rd_ph1,sep='')
+print("\tWrite phasing:\t",wr_ph1,sep='')
+print("LET Task 2")
+print("\tPeriod:\t\t",T2,sep='')
+print("\tRead phasing:\t",rd_ph2,sep='')
+print("\tWrite phasing:\t",wr_ph2,sep='')
+print("Chain 1->2")
+print("\tPeriod:\t\t",T12,sep='')
+print("\tRead phasing:\t",rd_ph12,sep='')
+print("\tWrite phasing:\t",wr_ph12,sep='')
+print("\tMin latency:\t",min_latency,sep='')
+print("\tMax latency:\t",max_latency,sep='')
+print("\tId min latency:\t",id_min_latency,"+k*",cycle,sep='')
+print("\tId max latency:\t",id_max_latency,"+k*",cycle,sep='')
+print("\tMax latency:\t",max_latency,sep='')
+print("\tMax latency:\t",max_latency,sep='')
+if T1 == T2:
+   print("Chain 1->2 is LET",sep='')
+else:
+   print("Chain 1->2 becomes LET",sep='')
+   if T1 > T2:
+      print("\tby adding a copier LET task after Task 2")
+      print("\t\tRead phasing:\t",rd_ph2next,sep='')
+      print("\t\tWrite phasing:\t",rd_ph2next,sep='')
+      print("\tRead phasing:\t",rd_ph12,sep='')
+      print("\tWrite phasing:\t",wr_ph12[id_max_latency],sep='')
+   elif T1 < T2:
+      print("\tby adding a copier LET task before Task 1")
+      print("\t\tRead phasing:\t",wr_ph1prev,sep='')
+      print("\t\tWrite phasing:\t",wr_ph1prev,sep='')
+      print("\tRead phasing:\t",rd_ph12[id_max_latency],sep='')
+      print("\tWrite phasing:\t",wr_ph12,sep='')
 
 
 
