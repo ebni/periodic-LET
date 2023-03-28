@@ -36,7 +36,7 @@ T1 =  16
 rd_ph1 = 1
 wr_ph1 = rd_ph1+T1            # implicit deadline
 T2 = 10
-rd_ph2 = 1
+rd_ph2 = 0
 wr_ph2 = rd_ph2+T2            # implicit deadline
 
 # Example of Section 5.2.1
@@ -123,8 +123,8 @@ print("\tMin latency:\t",min_latency,sep='')
 print("\tMax latency:\t",max_latency,sep='')
 print("\tId min latency:\t",id_min_latency,"+k*",cycle,sep='')
 print("\tId max latency:\t",id_max_latency,"+k*",cycle,sep='')
-print("\tMax latency:\t",max_latency,sep='')
-print("\tMax latency:\t",max_latency,sep='')
+print("\tRead delta:\t",rd_delta12,sep='')
+print("\tWrite delta:\t",wr_delta12,sep='')
 if T1 == T2:
    print("Chain 1->2 is LET",sep='')
 else:
