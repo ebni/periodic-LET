@@ -5,9 +5,9 @@ This simple Python code implements the analysis described in the paper
 > *"Zero-Jitter Chains of Periodic LET Tasks via Algebraic Rings"*,
 > IEEE Transactions on Computers, 2023.
 
-You can find the paper by clicking on its [DoI https://doi.org/10.1109/TC.2023.3283707]{https://doi.org/10.1109/TC.2023.3283707}.
+You can find the paper by clicking on its [DoI https://doi.org/10.1109/TC.2023.3283707](https://doi.org/10.1109/TC.2023.3283707).
 
-Also, you can find the presentation given at RTSS'23 at the [following link]{https://github.com/ebni/periodic-LET/docs/2023RTSS_WaP_slides.pdf}.
+Also, you can find the presentation given at RTSS'23 at the [following link](https://github.com/ebni/periodic-LET/docs/2023RTSS_WaP_slides.pdf).
 
 
 ### Requirements
